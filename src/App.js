@@ -1,28 +1,33 @@
-import { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './App.css';
 import { Button, Card, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
-  const [todos, setTodos] = useState([
-    {
-      text: "This is a sample todo",
-      completed: false
-    }
-  ])
+  const [todos, setTodos] = useState([])
 
-  const addTodo = ({ text }) => {
-    setTodos([{ text }, ...todos])
-  }
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  });
+
+  const addTodo = (text) => {
+    const newTodos = [...todos, { text }];
+    setTodos(newTodos);
+  };
 
   const markTodo = (idx) => {
-    todos[idx].completed = !completed
-    setTodos(todos)
-  }
+    const newTodos = [...todos];
+    newTodos[idx].isCompleted = !newTodos[idx].isCompleted;
+    setTodos(newTodos);
+  };
 
   const deleteTodo = (idx) => {
-    setTodos(todos.splice(idx, 1))
-  }
+    const newTodos = [...todos];
+    newTodos.splice(idx, 1);
+    setTodos(newTodos);
+  };
 
   const FormTodo = ({ addTodo }) => {
     const [value, setValue] = useState('')
@@ -32,29 +37,31 @@ function App() {
       if (!value) return;
       addTodo(value)
       setValue('')
-    }
+    };
 
     return (
       <Form onSubmit={handleSubmit}>
         <Form.Group>
           <Form.Label><b>Add Todo</b></Form.Label>
-          <Form.Control type='text' value={value} placeholder='Add New Todo' className='input' onChange={(e) => { setValue(e.target.value) }} />
+          <Form.Control type='text' value={value} placeholder='Add New Todo' className='input' onChange={(e) => { setValue(e.target.value) }} ref={inputRef} />
         </Form.Group>
-        <Button variant="primary mb-3" type="submit">Submit</Button>
+        <Button className='mt-3' variant="primary mb-3" type="submit">Submit</Button>
       </Form>
-    )
-  }
+    );
+  };
 
-  const Todo = ({ idx, todo, markTodo, deleteTodo }) => (
-    <div className="todo">
-      <span style={{ textDecoration: todo.completed ? "line-through" : "" }}>{todo.text}</span>
-      <div>
-        <Button variant="outline-success" onClick={() => markTodo(idx)}>✓</Button>
-        {' '}
-        <Button variant="outline-danger" onClick={() => deleteTodo(idx)}>✕</Button>
+  const Todo = ({ idx, todo, markTodo, deleteTodo }) => {
+    return (
+      <div className="todo">
+        <span style={{ textDecoration: todo.isCompleted ? "line-through" : "" }}>{todo.text}</span>
+        <div>
+          <Button variant="outline-success" onClick={() => markTodo(idx)}>✓</Button>
+          {' '}
+          <Button variant="outline-danger" onClick={() => deleteTodo(idx)}>✕</Button>
+        </div>
       </div>
-    </div>
-  )
+    );
+  };
 
   return (
     <div className="app">
@@ -79,6 +86,6 @@ function App() {
       </div>
     </div>
   );
-}
+};
 
 export default App;

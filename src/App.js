@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import './App.css';
 import { Button, Card, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'boxicons';
 
 function App() {
   const [todos, setTodos] = useState([])
@@ -39,13 +40,19 @@ function App() {
       setValue('')
     };
 
+    const handleReset = (e) => {
+      setTodos([])
+    }
+
     return (
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit} onReset={handleReset}>
         <Form.Group>
-          <Form.Label><b>Add Todo</b></Form.Label>
+          <Form.Label><b style={{ color: 'white', fontSize: '1.2rem' }}>Welcome!</b></Form.Label>
           <Form.Control type='text' value={value} placeholder='Add New Todo' className='input' onChange={(e) => { setValue(e.target.value) }} ref={inputRef} />
         </Form.Group>
         <Button className='mt-3' variant="primary mb-3" type="submit">Submit</Button>
+        {' '}
+        <Button className='mt-3' variant="danger mb-3" type="reset">Clear All</Button>
       </Form>
     );
   };
@@ -53,7 +60,7 @@ function App() {
   const Todo = ({ idx, todo, markTodo, deleteTodo }) => {
     return (
       <div className="todo">
-        <span style={{ textDecoration: todo.isCompleted ? "line-through" : "" }}>{todo.text}</span>
+        <span>{todo.text}</span>
         <div>
           <Button variant="outline-success" onClick={() => markTodo(idx)}>✓</Button>
           {' '}
@@ -66,12 +73,12 @@ function App() {
   return (
     <div className="app">
       <div className="container">
-        <h1 className="text-center mb-4">Todo List</h1>
+        <h1 className="d-flex align-items-center justify-content-center mb-4" style={{ color: 'white' }}>Todo List</h1>
         <FormTodo addTodo={addTodo} />
         <div>
           {todos.map((todo, idx) => (
-            <Card>
-              <Card.Body>
+            <Card style={{ marginBottom: '5px', borderRadius: '0.5em' }}>
+              <Card.Body style={{ opacity: todo.isCompleted ? "50%" : "", backgroundColor: todo.isCompleted ? "gray" : " " }}>
                 <Todo
                   key={idx}
                   idx={idx}
@@ -84,7 +91,7 @@ function App() {
           ))}
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 

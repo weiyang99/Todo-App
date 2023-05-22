@@ -1,9 +1,8 @@
 .app {
   padding: 5% 15%;
-  background: url(nightsky.jpg);
+  background-color: rgb(129, 166, 215);
   background-size: cover;
   background-position: center;
-  height: 100vh;
 }
 
 .todo {

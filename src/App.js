@@ -71,7 +71,7 @@ function App() {
   };
 
   return (
-    <div className="app">
+    <div className="app" style={{ height: todos.length < 7 ? '100vh' : '100%' }}>
       <div className="container">
         <h1 className="d-flex align-items-center justify-content-center mb-4" style={{ color: 'white' }}>Todo List</h1>
         <FormTodo addTodo={addTodo} />
